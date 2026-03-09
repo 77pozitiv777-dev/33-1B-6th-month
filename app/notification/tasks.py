@@ -1,4 +1,4 @@
-from celery import shared_task
+from core.celery import shared_task
 from django.utils import timezone
 from app.notification.models import Notification
 
@@ -13,3 +13,10 @@ def deliver_notification(self, notification_id : int) -> None:
 
     notif.delivered_at = timezone.now()
     notif.save(update_fields=["delivered_at"])
+
+from core.celery import app
+from .models import Notification
+
+@app.task
+def create_notification_task(user_id, message):
+    Notification.objects.create(user_id=user_id, message=message)
