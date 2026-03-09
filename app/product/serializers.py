@@ -4,6 +4,7 @@ from app.product.models import (
     Category, Models, Product, ProductImage, Favorite,
     CartItem, Cart, Order, OrderItem
 )
+from .models import Notification, Order
 
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:

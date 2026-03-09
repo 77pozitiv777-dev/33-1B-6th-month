@@ -1,5 +1,6 @@
 from django.db import models
 from app.users.models import User
+from django.contrib.auth import get_user_model
 
 class NotificationType(models.TextChoices):
     ORDER_STATUS_CHANGED = "order_status_changed", "order status changed" 
@@ -27,3 +28,14 @@ class Notification(models.Model):
 
     def __str__(self):
         return self.type    
+
+User = get_user_model()
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
